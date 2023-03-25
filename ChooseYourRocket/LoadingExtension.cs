@@ -1,6 +1,10 @@
-﻿using ChooseYourRocket.Detour;
+﻿using System;
+using System.Linq;
+using ChooseYourRocket.Detour;
+using ColossalFramework.Plugins;
 using ICities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ChooseYourRocket
 {
@@ -8,10 +12,22 @@ namespace ChooseYourRocket
     {
         private static GameObject _gameObject;
 
+        public static int MaxVehicleCount;
+
         public override void OnCreated(ILoading loading)
         {
             base.OnCreated(loading);
             RocketLaunchAIDetour.Deploy();
+            if (Util.IsModActive(1764208250))
+            {
+                UnityEngine.Debug.LogWarning("More Vehicles is enabled, applying compatibility workaround");
+                MaxVehicleCount = ushort.MaxValue + 1;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("More Vehicles is not enabled");
+                MaxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
+            }
         }
 
         public override void OnReleased()

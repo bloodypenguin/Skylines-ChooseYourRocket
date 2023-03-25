@@ -60,7 +60,7 @@ namespace ChooseYourRocket
                     _rocketDropDown.AddItem(r.name);
                 });
                 _rocketDropDown.eventSelectedIndexChanged += IndexChangeHandler;
-                _rocketLabel = UiUtil.CreateLabel("Rocket", _chirpXPanel.component, new Vector3());
+                _rocketLabel = UiUtil.CreateLabel("Rocket", _chirpXPanel.component, new Vector3(0,40));
                 _initialized = true;
             }
             if (!_chirpXPanel.component.isVisible)

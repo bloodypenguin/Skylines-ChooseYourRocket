@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
+using ColossalFramework.Plugins;
 using UnityEngine;
 
 namespace ChooseYourRocket
@@ -18,34 +20,19 @@ namespace ChooseYourRocket
             return field.GetValue(instance);
         }
 
-        public static bool IsCargoStation(Building station)
+        public static bool IsModActive(ulong modId)
         {
-            if (station.m_flags == Building.Flags.None)
+            try
             {
+                var plugins = PluginManager.instance.GetPluginsInfo();
+                return plugins.Any(p => p != null && p.isEnabled && p.publishedFileID.AsUInt64 == modId);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Failed to detect if mod {modId} is active");
+                UnityEngine.Debug.LogException(e);
                 return false;
             }
-            if (station.Info == null)
-            {
-                return false;
-            }
-            return station.Info.m_buildingAI is CargoStationAI;
-        }
-
-        public static ushort StationBuildingIdByPosition(Vector3 position)
-        {
-            for (ushort i = 0; i < BuildingManager.instance.m_buildings.m_size; i++)
-            {
-                var building = BuildingManager.instance.m_buildings.m_buffer[i];
-                if (!IsCargoStation(building))
-                {
-                    continue;
-                }
-                if (position.Equals(building.m_position))
-                {
-                    return i;
-                }
-            }
-            throw new Exception(string.Format("No building was found for position {0}", position));
         }
     }
 }

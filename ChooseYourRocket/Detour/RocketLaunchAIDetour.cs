@@ -87,7 +87,7 @@ namespace ChooseYourRocket.Detour
                     rocket = num1;
                 //end mod
                 num1 = instance2.m_vehicles.m_buffer[(int)num1].m_nextOwnVehicle;
-                if (++num2 > 16384)
+                if (++num2 > LoadingExtension.MaxVehicleCount)
                 {
                     CODebugBase<LogChannel>.Error(LogChannel.Core,
                         "Invalid list detected!\n" + System.Environment.StackTrace);
@@ -145,7 +145,7 @@ namespace ChooseYourRocket.Detour
                             }
 
                             vehicleID3 = instance1.m_vehicles.m_buffer[(int)vehicleID3].m_nextGuestVehicle;
-                            if (++num6 > 16384)
+                            if (++num6 > LoadingExtension.MaxVehicleCount)
                             {
                                 CODebugBase<LogChannel>.Error(LogChannel.Core,
                                     "Invalid list detected!\n" + System.Environment.StackTrace);
