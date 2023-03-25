@@ -20,12 +20,12 @@ namespace ChooseYourRocket
             RocketLaunchAIDetour.Deploy();
             if (Util.IsModActive(1764208250))
             {
-                UnityEngine.Debug.LogWarning("More Vehicles is enabled, applying compatibility workaround");
+                UnityEngine.Debug.LogWarning("ChooseYourRocket: More Vehicles is enabled, applying compatibility workaround");
                 MaxVehicleCount = ushort.MaxValue + 1;
             }
             else
             {
-                UnityEngine.Debug.Log("More Vehicles is not enabled");
+                UnityEngine.Debug.Log("ChooseYourRocket: More Vehicles is not enabled");
                 MaxVehicleCount = VehicleManager.MAX_VEHICLE_COUNT;
             }
         }
