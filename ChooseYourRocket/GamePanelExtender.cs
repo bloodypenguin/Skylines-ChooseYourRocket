@@ -1,6 +1,4 @@
-using System;
-using System.Linq;
-using ColossalFramework;
+using System.Collections.Generic;
 using ColossalFramework.UI;
 using UnityEngine;
 
@@ -12,6 +10,7 @@ namespace ChooseYourRocket
         private ChirpXPanel _chirpXPanel;
         private UIDropDown _rocketDropDown;
         private UILabel _rocketLabel;
+        private List<string> _assetNames;
 
         public void OnDestroy()
         {
@@ -54,13 +53,15 @@ namespace ChooseYourRocket
                 _chirpXPanel = infoPanel;
                 _rocketDropDown = UiUtil.CreateDropDown(_chirpXPanel.component);
                 _rocketDropDown.width = 250;
-
+                _rocketDropDown.relativePosition = new Vector3(16, 345);
+                _assetNames = new List<string>();
                 PrefabLister.ListRockets().ForEach(r =>
                 {
-                    _rocketDropDown.AddItem(r.name);
+                    _assetNames.Add(r.name);
+                    _rocketDropDown.AddItem(Util.CleanName(r.name));
                 });
                 _rocketDropDown.eventSelectedIndexChanged += IndexChangeHandler;
-                _rocketLabel = UiUtil.CreateLabel("Rocket", _chirpXPanel.component, new Vector3(0,40));
+                _rocketLabel = UiUtil.CreateLabel("Rocket type", _chirpXPanel.component, new Vector3(16,325));
                 _initialized = true;
             }
             if (!_chirpXPanel.component.isVisible)
@@ -77,19 +78,19 @@ namespace ChooseYourRocket
                 return;
             }
             var eventId = (ushort)Util.GetInstanceField(typeof(ChirpXPanel), _chirpXPanel, "m_currentEventID");
-            String name = _rocketDropDown.items[value];
-            if (name == null)
+            var assetName = _assetNames[value];
+            if (assetName == null)
             {
                 return;
             }
-            Configuration.SetRocket(eventId, name);
+            Configuration.SetRocket(eventId, assetName);
         }
 
         private void SetUpRocketDropDown()
         {
             var eventId = (ushort) Util.GetInstanceField(typeof(ChirpXPanel), _chirpXPanel, "m_currentEventID");
-            VehicleInfo rocket = Configuration.Get(eventId).Rocket;
-            int index = _rocketDropDown.items.ToList().IndexOf(rocket.name);
+            var rocket = Configuration.Get(eventId).Rocket;
+            var index = _assetNames.IndexOf(rocket.name);
             _rocketDropDown.selectedIndex = index;
 
         }

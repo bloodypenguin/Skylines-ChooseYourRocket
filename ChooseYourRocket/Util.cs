@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using ColossalFramework.Plugins;
-using UnityEngine;
 
 namespace ChooseYourRocket
 {
@@ -33,6 +32,11 @@ namespace ChooseYourRocket
                 UnityEngine.Debug.LogException(e);
                 return false;
             }
+        }
+        
+        public static string CleanName(string name)
+        {
+            return name.Substring(name.IndexOf('.') + 1).Replace("_Data", "");
         }
     }
 }
